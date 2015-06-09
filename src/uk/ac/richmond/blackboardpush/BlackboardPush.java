@@ -20,6 +20,11 @@ public class BlackboardPush extends Application {
     
     ApplicationProperties props;
     
+    /**
+     * Start the Blackboard push application
+     * @param stage Not used
+     * @throws Exception Not used
+     */
     @Override
     public void start(Stage stage) throws Exception {
 
@@ -35,11 +40,12 @@ public class BlackboardPush extends Application {
     }
 
     /**
+     * Entry point to the Blackboard Push application
+     * 
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         launch(args);
     }
-    
-    
+      
 }

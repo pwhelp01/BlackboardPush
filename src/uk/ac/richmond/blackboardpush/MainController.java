@@ -39,12 +39,20 @@ public class MainController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        // Attach event handler to Process button
         this.btnProcess.setOnAction(this::btnProcessAction);
+        
+        // Get PowerCAMPUS database properties
         getApplicationProperties();
         this.pc = new PowerCampusDAO(this.props.getDbserver(), this.props.getDbport(), this.props.getDbname());
     }    
     
     
+    /**
+     * Event handler for the Process button
+     * @param event Button click event
+     */
     private void btnProcessAction(ActionEvent event) {
         
         String userInput = this.txtPeopleId.getText().trim();
@@ -59,7 +67,7 @@ public class MainController implements Initializable {
                 
         
         try {
-            // Check student is in PersonUser
+            // Check student is in PERSONUSER table
             pc.createConnection(this.username, this.password);
             
             if(!pc.isInPersonUser(userInput)) {
@@ -68,24 +76,35 @@ public class MainController implements Initializable {
                 return;
             }
             
+            // Student is in PERSONUSER table, so force Blackboard update
             String result = pc.forcePerson(userInput);
             this.areaOutput.setText(result);
             
+            // Close connection
             pc.closeConnection();
             
         }
         catch (SQLException e) {
+            // Error occured in database connection.  Display error and tidy up
             this.areaOutput.setText("Error connecting to the PowerCampus database");
             pc.closeConnection();
         }
 
     }
+     
+    /**
+     * Validate a user input for People ID prior to executing against the database
+     * 
+     * @param peopleId User input for People ID
+     * @return True if People ID is in valid format (9 digits [0-9] long)
+     */
+    private boolean validateInput(String peopleId) {
         
-    public boolean validateInput(String peopleId) {
-        
+        // Create regex for pattern matching
         Pattern testPattern = Pattern.compile("[0-9]{9}");
         Matcher testString = testPattern.matcher(peopleId);
         
+        // Test regex for valid People ID and return result
         if(testString.matches()) {
             return true;
         }
@@ -95,6 +114,9 @@ public class MainController implements Initializable {
        
     }
     
+    /**
+     * Get application properties from the properties file
+     */
     private void getApplicationProperties() {
         try {
             this.props = new ApplicationProperties();
@@ -112,22 +134,28 @@ public class MainController implements Initializable {
     }
     
     /* Getters and setters */
+    /**
+     * Set the database username 
+     * @param username Database username
+     */
     public void setUsername(String username) {
         this.username = username;
     }
     
+    /**
+     * Set the database password
+     * @param password Database password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
     
+    /**
+     * Set the PowerCAMPUS DAO object
+     * @param pc PowerCAMPUSDAO
+     */
     public void setPc(PowerCampusDAO pc) {
         this.pc = pc;
     }
-    
-    public void initData() {
-        this.areaOutput.setText(this.username + System.lineSeparator() + this.password);
-        
-    }
-
     
 }
