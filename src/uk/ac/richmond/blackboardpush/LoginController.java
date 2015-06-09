@@ -38,7 +38,7 @@ public class LoginController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        btnLogin.setOnAction(this::btnLoginAction);
+        this.btnLogin.setOnAction(this::btnLoginAction);
     }    
     
     private void btnLoginAction(ActionEvent event) {
@@ -50,12 +50,12 @@ public class LoginController implements Initializable {
         getApplicationProperties();
         
         try{ 
-            // authenticate(username, password);
+            authenticate(username, password);
             loadMainScene((Stage) this.btnLogin.getScene().getWindow(), this.pc, username, password);
         }
-        /* catch (SQLException e) {
+        catch (SQLException e) {
             this.lblError.setVisible(true);
-        } */
+        }
         catch (IOException e) {
             
         }
@@ -64,6 +64,8 @@ public class LoginController implements Initializable {
     private void getApplicationProperties() {
         try {
             this.props = new ApplicationProperties();
+            System.out.println(this.props.toString());  // Debug
+            System.out.println(this.props.getDbname()); // Debug
         }
         catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

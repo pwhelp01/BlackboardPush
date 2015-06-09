@@ -26,9 +26,9 @@ public class ApplicationProperties {
         
         try {
             props.load(new FileInputStream("blackboardpush.properties"));
-            this.dbserver = props.getProperty("dbserver");
-            this.dbport = props.getProperty("dbport");
-            this.dbname = props.getProperty("dbname");
+            this.dbserver = props.getProperty("pc.dbserver");
+            this.dbport = props.getProperty("pc.dbport");
+            this.dbname = props.getProperty("pc.dbname");
         }
         catch (IOException e) {
             throw e;
